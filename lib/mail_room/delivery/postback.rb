@@ -57,14 +57,14 @@ module MailRoom
           )
         end
 
-        connection.post do |request|
+        response = connection.post do |request|
           request.url @delivery_options.url
           request.body = message
           # request.options[:timeout] = 3
           request.headers['Content-Type'] = @delivery_options.content_type unless @delivery_options.content_type.nil?
         end
-
-        @delivery_options.logger.info({ delivery_method: 'Postback', action: 'message pushed', url: @delivery_options.url })
+        
+        @delivery_options.logger.info({ response_body: response.body, response_status: response.status, delivery_method: 'Postback', action: 'message pushed', url: @delivery_options.url })
         true
       end
     end
